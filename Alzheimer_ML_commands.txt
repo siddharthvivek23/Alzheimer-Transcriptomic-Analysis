@@ -1,0 +1,35 @@
+python --version
+ python --version
+where python
+where py
+py --version
+py -m pip install scanpy anndata pandas scikit-learn matplotlib
+py
+copy "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad" "C:\Users\vivek\Documents\test.h5ad"
+py
+dir "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad"
+import scanpy as sc
+py
+doskey /history > single_cell_AD_commands.txt
+py
+dir
+cd ComBio_Bioinformatics
+cd
+cd ..
+dir -Recurse -Filter *.h5ad
+dir -Recurse -Include *.h5,*.csv,*.mtx
+cd Downloads
+dir
+cd
+dir -Recurse -ErrorAction SilentlyContinue | findstr /i "alz"
+ cd..
+notepad .python_history
+py
+dir documents
+py
+doskey /history > Alzheimer_ML_commands.txt
+mkdir Alzheimer_ML_Project
+move Alzheimer_ML_commands.txt Alzheimer_ML_Project
+py
+dir
+doskey /history > Alzheimer_ML_commands.txt

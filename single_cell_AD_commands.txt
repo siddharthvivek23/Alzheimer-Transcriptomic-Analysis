@@ -1,0 +1,13 @@
+python --version
+ python --version
+where python
+where py
+py --version
+py -m pip install scanpy anndata pandas scikit-learn matplotlib
+py
+copy "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad" "C:\Users\vivek\Documents\test.h5ad"
+py
+dir "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad"
+import scanpy as sc
+py
+doskey /history > single_cell_AD_commands.txt
