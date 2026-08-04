@@ -1,35 +1,188 @@
-python --version
- python --version
-where python
-where py
-py --version
-py -m pip install scanpy anndata pandas scikit-learn matplotlib
-py
-copy "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad" "C:\Users\vivek\Documents\test.h5ad"
-py
-dir "C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO.h5ad"
+# Alzheimer's Disease Machine Learning Analysis
+# Logistic Regression classification using single-cell RNA-seq data
+# Dataset: GSE243292 AD snRNA-seq
+
 import scanpy as sc
-py
-doskey /history > single_cell_AD_commands.txt
-py
-dir
-cd ComBio_Bioinformatics
-cd
-cd ..
-dir -Recurse -Filter *.h5ad
-dir -Recurse -Include *.h5,*.csv,*.mtx
-cd Downloads
-dir
-cd
-dir -Recurse -ErrorAction SilentlyContinue | findstr /i "alz"
- cd..
-notepad .python_history
-py
-dir documents
-py
-doskey /history > Alzheimer_ML_commands.txt
-mkdir Alzheimer_ML_Project
-move Alzheimer_ML_commands.txt Alzheimer_ML_Project
-py
-dir
-doskey /history > Alzheimer_ML_commands.txt
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import joblib
+
+
+# Load processed single-cell dataset
+
+adata = sc.read_h5ad(
+    r"C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO_data.h5ad"
+)
+
+
+# Normalize data
+
+sc.pp.normalize_total(
+    adata,
+    target_sum=1e4
+)
+
+sc.pp.log1p(adata)
+
+
+# Identify highly variable genes
+
+sc.pp.highly_variable_genes(
+    adata,
+    n_top_genes=2000
+)
+
+
+# Create machine learning features and labels
+
+X = adata[:, adata.var.highly_variable].X
+
+y = adata.obs["atscore"]
+
+
+# Split data into training and testing sets
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+
+# Train Logistic Regression model
+
+model = LogisticRegression(
+    max_iter=1000
+)
+
+model.fit(
+    X_train,
+    y_train
+)
+
+
+# Evaluate model accuracy
+
+accuracy = model.score(
+    X_test,
+    y_test
+)
+
+print("Model Accuracy:", accuracy)
+
+
+# Generate predictions
+
+y_pred = model.predict(
+    X_test
+)
+
+
+# Create confusion matrix
+
+cm = confusion_matrix(
+    y_test,
+    y_pred
+)
+
+print(cm)
+
+
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=["A-T-", "A+T-", "A+T+"]
+)
+
+disp.plot()
+
+plt.title(
+    "Logistic Regression Classification of Alzheimer's Pathology"
+)
+
+plt.tight_layout()
+
+plt.savefig(
+    "Confusion_Matrix1.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
+
+
+# Calculate gene importance
+
+importance = pd.DataFrame({
+    "gene": adata.var_names[adata.var.highly_variable],
+    "importance": abs(model.coef_).mean(axis=0)
+})
+
+
+importance = importance.sort_values(
+    "importance",
+    ascending=False
+)
+
+
+# Save gene importance results
+
+importance.to_csv(
+    "ML_gene_importance.csv",
+    index=False
+)
+
+
+# Display top predictive genes
+
+top_genes = importance.head(10)
+
+print(top_genes)
+
+
+# Plot top predictive genes
+
+plt.figure(figsize=(7,5))
+
+plt.barh(
+    top_genes["gene"],
+    top_genes["importance"]
+)
+
+plt.xlabel(
+    "Model Feature Importance"
+)
+
+plt.ylabel(
+    "Gene"
+)
+
+plt.title(
+    "Top Predictive Genes for Alzheimer's Pathology"
+)
+
+plt.gca().invert_yaxis()
+
+plt.tight_layout()
+
+plt.savefig(
+    "MLTOPPREDICTGENESBAR.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
+
+
+# Save trained model
+
+joblib.dump(
+    model,
+    "Alzheimer_LogisticRegression_model.pkl"
+)
