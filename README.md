@@ -16,15 +16,13 @@ The analysis includes:
 
 ## Methods and Tools
 
-### Bulk RNA-seq
-
+Bulk RNA-seq
 - STAR alignment
 - DESeq2 differential expression analysis
 - rMATS alternative splicing analysis
 - maser splicing visualization
 
-### Single-cell RNA-seq
-
+Single-cell RNA-seq
 - Python
 - Scanpy
 - AnnData
@@ -35,8 +33,7 @@ The analysis includes:
 - Cell-type analysis
 - APOE and TREM2 expression analysis
 
-### Machine Learning
-
+Machine Learning
 - Python
 - scikit-learn
 - Pandas
@@ -55,6 +52,12 @@ GSE243292
 ## Reproducibility
 
 Analysis scripts, command histories, and key output files are included in this repository to document the computational workflow.
+
+## Research Paper
+
+The complete research portfolio PDF is available below:
+
+[View Research Paper PDF](https://github.com/siddharthvivek23/Alzheimer-Transcriptomic-Analysis/blob/main/Siddharth%20Vivek%20Alzheimers%20Transcriptomics%20Research%20Portfolio%20Final.pdf)
 
 ## Author
 
