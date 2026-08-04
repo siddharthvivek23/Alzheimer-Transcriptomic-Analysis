@@ -1,13 +1,13 @@
 # Machine Learning Analysis
 
-This folder contains the machine learning workflow used to identify predictive molecular signatures associated with Alzheimer's disease.
+This folder contains the machine learning workflow used to identify predictive molecular signatures associated with Alzheimer's disease using single-cell RNA-seq data.
 
 ## Methods
 
-- Feature selection from single-cell gene expression data
+- Preparation of gene expression features from single-cell RNA-seq data
 - Logistic Regression classification
 - Model evaluation using confusion matrix
-- Feature importance analysis
+- Feature importance analysis to identify predictive genes
 
 ## Tools
 
@@ -16,6 +16,13 @@ This folder contains the machine learning workflow used to identify predictive m
 - Scanpy
 - AnnData
 
+## Dataset
+
+Single-nucleus RNA-seq data obtained from NCBI GEO:
+GSE243292
+
 ## Outputs
 
-Includes model results and important predictive gene features.
+- Confusion matrix visualization
+- Predictive gene importance ranking
+- Feature importance results
