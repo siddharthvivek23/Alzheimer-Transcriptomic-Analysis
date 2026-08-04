@@ -42,7 +42,11 @@ The analysis includes:
 
 ## Data Sources
 
-RNA-seq datasets were obtained from publicly available NCBI GEO resources.
+Bulk RNA-seq data were provided through the University at Albany high school bioinformatics program and included Alzheimer's disease and control brain tissue samples.
+
+Single-cell RNA-seq data were obtained from the publicly available NCBI GEO database:
+
+GSE243292
 
 ## Reproducibility
 
