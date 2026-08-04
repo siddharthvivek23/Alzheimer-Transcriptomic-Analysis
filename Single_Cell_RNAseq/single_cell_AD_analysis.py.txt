@@ -1,1 +1,193 @@
+# Alzheimer's Single-Cell RNA-seq Analysis
+# Dataset: GSE243292 AD snRNA-seq
 
+import scanpy as sc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+# Load dataset
+adata = sc.read_h5ad(
+    r"C:\Users\vivek\Documents\GSE243292_ADsnRNAseq_GEO_data.h5ad"
+)
+
+adata
+
+
+# Quality control metrics
+sc.pp.calculate_qc_metrics(
+    adata,
+    inplace=True
+)
+
+adata.obs[["n_genes_by_counts", "total_counts"]].describe()
+
+
+# Filter low/high quality cells
+adata = adata[
+    (adata.obs.n_genes_by_counts > 500) &
+    (adata.obs.n_genes_by_counts < 4000)
+].copy()
+
+
+# Normalize and log transform
+sc.pp.normalize_total(
+    adata,
+    target_sum=1e4
+)
+
+sc.pp.log1p(adata)
+
+
+# Identify highly variable genes
+sc.pp.highly_variable_genes(
+    adata,
+    n_top_genes=2000
+)
+
+adata.var["highly_variable"].value_counts()
+
+
+# PCA
+sc.tl.pca(adata)
+
+print(adata.obsm["X_pca"].shape)
+
+
+# Neighbor graph and UMAP
+sc.pp.neighbors(
+    adata,
+    n_neighbors=15,
+    n_pcs=50
+)
+
+sc.tl.umap(adata)
+
+
+# UMAP by pathology score
+sc.pl.umap(
+    adata,
+    color="atscore"
+)
+
+
+# UMAP by cell type
+sc.pl.umap(
+    adata,
+    color="final_celltype"
+)
+
+
+# Alzheimer’s gene expression
+sc.pl.umap(
+    adata,
+    color=["APOE", "TREM2"]
+)
+
+
+# Cell type distribution by pathology
+celltype_counts = pd.crosstab(
+    adata.obs["atscore"],
+    adata.obs["final_celltype"]
+)
+
+celltype_percent = (
+    celltype_counts.div(
+        celltype_counts.sum(axis=1),
+        axis=0
+    ) * 100
+)
+
+celltype_percent
+
+
+# Plot overall cell composition
+celltype_percent.plot(
+    kind="bar",
+    stacked=True,
+    figsize=(8,5)
+)
+
+plt.ylabel("Percentage of Cells")
+plt.xlabel("Pathology Group")
+plt.title(
+    "Cellular Composition Across Alzheimer's Pathology Groups"
+)
+
+plt.legend(
+    title="Cell Type",
+    bbox_to_anchor=(1.05,1),
+    loc="upper left"
+)
+
+plt.tight_layout()
+
+plt.savefig(
+    "AD_Cell_Composition_Stacked_Bar.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
+
+
+# Sample-level cell composition analysis
+sample_celltype = pd.crosstab(
+    adata.obs["sampleID"],
+    adata.obs["final_celltype"]
+)
+
+sample_celltype_percent = (
+    sample_celltype.div(
+        sample_celltype.sum(axis=1),
+        axis=0
+    ) * 100
+)
+
+
+# Add pathology labels to samples
+sample_info = (
+    adata.obs[["sampleID", "atscore"]]
+    .drop_duplicates()
+    .sort_values("sampleID")
+)
+
+
+sample_results = sample_celltype_percent.merge(
+    sample_info,
+    on="sampleID"
+)
+
+
+# Average astrocyte and microglia percentage by pathology
+glial_summary = sample_results.groupby(
+    "atscore"
+)[["Ast", "Mic"]].mean()
+
+print(glial_summary)
+
+
+# Plot astrocyte and microglia changes
+glial_summary.plot(
+    kind="bar",
+    figsize=(6,4)
+)
+
+plt.ylabel("Average Cell Percentage (%)")
+plt.xlabel("Alzheimer's Pathology Group")
+
+plt.title(
+    "Astrocyte and Microglia Representation Across Pathology Groups"
+)
+
+plt.xticks(rotation=0)
+
+plt.tight_layout()
+
+plt.show()
+
+
+# Save processed AnnData object
+adata.write(
+    "Alzheimer_single_cell_processed.h5ad"
+)
