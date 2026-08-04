@@ -13,12 +13,14 @@ This folder contains the machine learning workflow used to identify predictive m
 
 - Python
 - scikit-learn
+- Pandas
 - Scanpy
 - AnnData
 
 ## Dataset
 
 Single-nucleus RNA-seq data obtained from NCBI GEO:
+
 GSE243292
 
 ## Outputs
@@ -26,3 +28,4 @@ GSE243292
 - Confusion matrix visualization
 - Predictive gene importance ranking
 - Feature importance results
+- Trained Logistic Regression model
