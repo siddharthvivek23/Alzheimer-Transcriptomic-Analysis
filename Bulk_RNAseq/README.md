@@ -1,14 +1,32 @@
 # Bulk RNA-seq Analysis
 
-Contains differential gene expression and alternative splicing analyses performed on Alzheimer's disease RNA-seq data.
+This folder contains the bulk RNA-seq workflow used to investigate differential gene expression and alternative splicing changes associated with Alzheimer's disease.
 
 ## Methods
 
-- STAR alignment
+### Differential Gene Expression Analysis
+
+- STAR alignment for RNA-seq reads
 - DESeq2 differential expression analysis
-- rMATS alternative splicing analysis
-- maser visualization
+- Identification of genes with altered expression between Alzheimer's disease and control samples
 
-## Files
+### Alternative Splicing Analysis
 
-Includes R command history, analysis objects, and splicing results.
+- rMATS analysis to identify differential alternative splicing events
+- Maser visualization of significant splicing events
+- PSI-based analysis of APP alternative splicing changes
+
+## Tools
+
+- R
+- DESeq2
+- rMATS
+- maser
+- STAR
+
+## Outputs
+
+- Differential expression results
+- Alternative splicing event files
+- rMATS summary statistics
+- APP alternative splicing PSI visualization
