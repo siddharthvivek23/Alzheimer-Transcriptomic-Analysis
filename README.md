@@ -28,6 +28,8 @@ The analysis includes:
 - Python
 - Scanpy
 - AnnData
+- Pandas
+- Matplotlib
 - PCA-based dimensionality reduction
 - UMAP visualization
 - Cell-type analysis
@@ -35,14 +37,16 @@ The analysis includes:
 
 ### Machine Learning
 
+- Python
 - scikit-learn
+- Pandas
 - Logistic Regression classification
 - Feature importance analysis
 - Model evaluation using confusion matrix
 
 ## Data Sources
 
-Bulk RNA-seq data were provided through the University at Albany high school bioinformatics program and included Alzheimer's disease and control brain tissue samples.
+Bulk RNA-seq data were provided through the University at Albany bioinformatics program and included Alzheimer's disease and control brain tissue samples.
 
 Single-cell RNA-seq data were obtained from the publicly available NCBI GEO database:
 
